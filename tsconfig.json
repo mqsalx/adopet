@@ -1,9 +1,26 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "target": "es6",
+    "module": "NodeNext",
+    "outDir": "./build",
     "esModuleInterop": true,
+    "strict": true,
     "noImplicitAny": true,
     "noEmitOnError": true,
+    "moduleResolution": "nodenext"
   },
-  "include": ["./src/**/*", "./server.ts"]
+  "include": ["src/**/*", "./server.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }
+// {
+//   "compilerOptions": {
+//     "target": "es6", // or a newer version that Node.js supports
+//     "module": "commonjs",
+//     "outDir": "./build",
+//     "esModuleInterop": true,
+//     "strict": true,
+//     "noEmitOnError": true
+//   },
+//   "include": ["src/**/*", "./server.ts"],
+//   "exclude": ["node_modules", "**/*.spec.ts"]
+// }
