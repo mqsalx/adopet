@@ -1,13 +1,11 @@
 import express, { Response } from "express";
 import router from "./routes/index.js";
 
+
 const app = express();
 app.use(express.json());
-router(app)
 
-app.get("/", (_, res: Response) => {
-  res.send("Welcome to TypeScript!");
-});
+router(app)
 
 function createPet(id: number, name: string, species: string, age: number, adopt: boolean) {
   return {

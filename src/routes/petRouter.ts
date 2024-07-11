@@ -1,10 +1,14 @@
 import express from "express"
 import PetController from "../controller/petController.js"
 
-const router = express.Router()
 
-const petController = new PetController
+const petRouter = express.Router()
 
-router.post("/", petController.createPet)
+const petController = new PetController()
 
-export default router
+petRouter.post("/", petController.create)
+petRouter.get("/",petController.list)
+petRouter.put("/:id", petController.update)
+petRouter.delete("/:id", petController.destroy)
+
+export default petRouter
