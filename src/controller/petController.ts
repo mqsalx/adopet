@@ -4,15 +4,6 @@ import EnumSpecies from "../enum/EnumSpecies.js"
 import PetRepo from "../repositories/PetRepo.js"
 import PetEntity from "../entities/PetEntity.js"
 
-
-let listPets: TypePet [] = []
-
-let id = 0
-function genId() {
-  id = id + 1;
-  return id;
-}
-
 export default class PetController {
 
     constructor(
@@ -21,28 +12,32 @@ export default class PetController {
 
     async create(req:Request, res:Response){
 
-        const {
-            name,
-            species,
-            adopt,
-            age
-        } = req.body as PetEntity
+        try {
+            const {
+                name,
+                species,
+                adopt,
+                age
+            } = req.body as PetEntity
 
-        if(!Object.values(EnumSpecies).includes(species as EnumSpecies) ) {
-            return res.status(400)
-                .json({ message: "Invalid Species" })
+            if(!Object.values(EnumSpecies).includes(species as EnumSpecies) ) {
+                return res.status(400)
+                    .json({ message: "Invalid Species" })
+            }
+
+            const newPet = new PetEntity(
+                name,
+                species,
+                adopt,
+                age
+            )
+
+            this.repository.create(newPet)
+
+            return res.status(201).json(newPet)
+        } catch (error) {
+            return res.status(500).json({ error: "Internal server error" });
         }
-
-        const newPet = new PetEntity(
-            name,
-            species,
-            adopt,
-            age
-        )
-
-        this.repository.create(newPet)
-
-        return res.status(201).json(newPet)
 
     }
 

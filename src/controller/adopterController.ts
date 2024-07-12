@@ -22,10 +22,49 @@ export default class AdopterController {
           address
         )
 
-        await this.repository.create(newAdopter);
+        this.repository.create(newAdopter);
         return res.status(201).json(newAdopter);
       } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
       }
   }
+
+  async list(req: Request, res: Response) {
+    const listAdopters = await this.repository.list()
+    return res.status(200).json(listAdopters)
+  }
+
+  async update(req: Request, res: Response) {
+
+    const { id } = req.params
+
+    const { success, message } = await this.repository.update(
+      Number(id),
+      req.body as AdopterEntity
+    )
+
+    if (!success) {
+      return res.status(404).json({ message})
+    }
+
+    return res.sendStatus(200)
+  }
+
+  async destroy(req: Request, res: Response) {
+    const { id } = req.params
+
+    const { success, message } = await this.repository.destroy(
+      Number(id),
+      req.body as AdopterEntity
+    )
+
+    if (!success) {
+      return res.status(404).json({ message })
+    }
+
+    return res.sendStatus(204)
+  }
+
+
+
 }
