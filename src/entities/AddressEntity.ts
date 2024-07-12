@@ -19,5 +19,5 @@ export default class AddressEntity {
     ) {
         this.city = city
         this.state = state
-}
+    }
 }

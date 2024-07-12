@@ -1,6 +1,7 @@
 import { Repository } from "typeorm"
 import AdopterEntity from "../entities/AdopterEntity.js"
 import AdopterInterface from "./interfaces/AdopterInterface.js"
+import AddressEntity from "../entities/AddressEntity.js"
 
 
 export default class AdopterRepo implements AdopterInterface {
@@ -70,6 +71,28 @@ export default class AdopterRepo implements AdopterInterface {
                 message: "Internal server error"
             }
         }
+    }
+
+    async updateAdopterAddress(
+        id: number,
+        address: AddressEntity
+    ): Promise<{ success: boolean; message?: string }> {
+        console.log("aqui")
+        const adopterToUpdate = await this.repository.findOne({ where: { id } })
+
+        console.log(adopterToUpdate)
+
+        if (!adopterToUpdate) {
+            return { success: false, message: "Adopter not found" }
+        }
+
+        const newAddress = new AddressEntity(address.city, address.state)
+
+        adopterToUpdate.address = newAddress
+
+        await this.repository.save(adopterToUpdate)
+
+        return { success: true }
     }
 
 

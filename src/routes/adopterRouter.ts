@@ -13,5 +13,6 @@ router.post("/", (req, res) => adopterController.create(req, res))
 router.get("/", (req, res) => adopterController.list(req, res))
 router.put("/:id", (req, res) => adopterController.update(req, res))
 router.delete("/:id", (req, res) => adopterController.destroy(req, res))
+router.patch("/:id", (req, res) => adopterController.updateAdopterAddress(req, res))
 
 export default router;

@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import AdopterEntity from "../entities/AdopterEntity.js"
 import AdopterRepo from "../repositories/AdopterRepo.js"
+import AddressEntity from "../entities/AddressEntity.js"
 
 
 export default class AdopterController {
@@ -62,6 +63,20 @@ export default class AdopterController {
     return res.sendStatus(204)
   }
 
+  async updateAdopterAddress(req: Request, res: Response) {
 
+    const { id } = req.params
+    console.log("Controller")
 
+    const { success, message } = await this.repository.updateAdopterAddress(
+      Number(id),
+      req.body as AddressEntity
+      )
+
+    if (!success) {
+      return res.status(404).json({ message })
+    }
+
+    return res.sendStatus(204)
+  }
 }
