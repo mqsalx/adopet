@@ -53,10 +53,7 @@ export default class AdopterController {
   async destroy(req: Request, res: Response) {
     const { id } = req.params
 
-    const { success, message } = await this.repository.destroy(
-      Number(id),
-      req.body as AdopterEntity
-    )
+    const { success, message } = await this.repository.destroy(Number(id))
 
     if (!success) {
       return res.status(404).json({ message })

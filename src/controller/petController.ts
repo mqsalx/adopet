@@ -67,10 +67,7 @@ export default class PetController {
 
         const { id } = req.params
 
-        const { success, message } = await this.repository.destroy(
-            Number(id),
-            req.body as PetEntity
-        )
+        const { success, message } = await this.repository.destroy(Number(id))
 
         if (!success) {
             return res.status(404).json({ message })

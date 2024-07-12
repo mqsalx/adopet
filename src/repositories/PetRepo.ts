@@ -48,7 +48,6 @@ export default class PetRepo implements PetInterface {
 
     async destroy(
         id: number,
-        newData: PetEntity
     ): Promise<{ success: boolean; message?: string}> {
 
         try {
@@ -59,7 +58,7 @@ export default class PetRepo implements PetInterface {
                 return { success: false, message: "Pet not found" }
             }
 
-            Object.assign(petToDestroy, newData)
+            Object.assign(petToDestroy)
 
             await this.repository.remove(petToDestroy)
 

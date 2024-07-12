@@ -49,7 +49,6 @@ export default class AdopterRepo implements AdopterInterface {
 
     async destroy(
         id: number,
-        newData: AdopterEntity
     ): Promise<{ success: boolean; message?: string}> {
 
         try {
