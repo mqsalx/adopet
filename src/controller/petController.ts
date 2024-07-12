@@ -1,6 +1,8 @@
 import { Request, Response } from "express"
 import type TypePet from "../types/typePet.js"
 import EnumSpecies from "../enum/EnumSpecies.js"
+import PetRepo from "../repositories/PetRepo.js"
+import PetEntity from "../entities/PetEntity.js"
 
 
 let listPets: TypePet [] = []
@@ -13,70 +15,73 @@ function genId() {
 
 export default class PetController {
 
-    create(req:Request, res:Response){
+    constructor(
+        private repository: PetRepo
+    ){}
+
+    async create(req:Request, res:Response){
 
         const {
             name,
             species,
             adopt,
             age
-        } = req.body as TypePet
+        } = req.body as PetEntity
 
         if(!Object.values(EnumSpecies).includes(species as EnumSpecies) ) {
             return res.status(400)
                 .json({ message: "Invalid Species" })
         }
 
-        const createdPet: TypePet = {
-            id: genId(),
+        const newPet = new PetEntity(
             name,
             species,
             adopt,
             age
-        }
+        )
 
-        listPets.push(createdPet)
+        this.repository.create(newPet)
 
-        return res.status(201).json(createdPet)
+        return res.status(201).json(newPet)
 
     }
 
-    list(req: Request, res: Response) {
+    async list(req: Request, res: Response) {
+        const listPets = await this.repository.list()
         return res.status(200).json(listPets)
     }
 
-    update(req: Request, res: Response) {
+    async update(req: Request, res: Response) {
 
         const { id } = req.params
-        const { name, species, adopt, age } = req.body as TypePet
-        const pet = listPets.find((pet) => pet.id === Number(id))
 
-        if (!pet) {
-            return res.status(404).json({ message: "Pet not found." })
+        const { success, message } = await this.repository.update(
+            Number(id),
+            req.body as PetEntity
+        )
+
+        if (!success) {
+            return res.status(404).json({ message })
         }
 
-        pet.name = name
-        pet.species = species
-        pet.adopt = adopt
-        pet.age = age
-
-        return res.status(200).json(pet)
+        return res.sendStatus(204)
 
     }
 
-    destroy(req: Request, res: Response) {
+    async destroy(req: Request, res: Response) {
 
         const { id } = req.params
-        const pet = listPets.find((pet) => pet.id === Number(id))
 
-        if(!pet) {
-            return res.status(404).json({ message: "Pet not found." })
+        const { success, message } = await this.repository.destroy(
+            Number(id),
+            req.body as PetEntity
+        )
+
+        if (!success) {
+            return res.status(404).json({ message })
         }
 
-        const index = listPets.indexOf(pet)
-        listPets.splice(index, 1)
-        return res.status(200).json({ message: "Pet successfully deleted!" })
-
+        return res.sendStatus(204)
 
     }
 }

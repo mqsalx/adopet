@@ -1,4 +1,6 @@
 import { DataSource } from "typeorm"
+import PetEntity from "../entities/PetEntity.js"
+import AdopterEntity from "../entities/AdopterEntity.js"
 
 export const AppDataSource = new DataSource({
     type:"mysql",
@@ -7,4 +9,9 @@ export const AppDataSource = new DataSource({
     username: "adopet",
     password: "admin",
     database: "db_adopet",
+    entities: [
+        PetEntity,
+        AdopterEntity
+    ],
+    synchronize: true
 })
