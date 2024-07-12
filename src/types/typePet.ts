@@ -5,7 +5,7 @@ type TypePet = {
     name: string,
     species: EnumSpecies,
     adopt: boolean,
-    age: number
+    age: Date
 }
 
 export default TypePet

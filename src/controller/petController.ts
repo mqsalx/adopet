@@ -5,12 +5,17 @@ import EnumSpecies from "../enum/EnumSpecies.js"
 
 let listPets: TypePet [] = []
 
+let id = 0
+function genId() {
+  id = id + 1;
+  return id;
+}
+
 export default class PetController {
 
     create(req:Request, res:Response){
 
         const {
-            id,
             name,
             species,
             adopt,
@@ -18,11 +23,12 @@ export default class PetController {
         } = req.body as TypePet
 
         if(!Object.values(EnumSpecies).includes(species as EnumSpecies) ) {
-            return res.status(400).json({ message: "Invalid Species" })
+            return res.status(400)
+                .json({ message: "Invalid Species" })
         }
 
         const createdPet: TypePet = {
-            id,
+            id: genId(),
             name,
             species,
             adopt,

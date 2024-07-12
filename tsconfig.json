@@ -7,20 +7,10 @@
     "strict": true,
     "noImplicitAny": true,
     "noEmitOnError": true,
-    "moduleResolution": "nodenext"
+    "moduleResolution": "nodenext",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   },
   "include": ["src/**/*", "./server.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
-// {
-//   "compilerOptions": {
-//     "target": "es6", // or a newer version that Node.js supports
-//     "module": "commonjs",
-//     "outDir": "./build",
-//     "esModuleInterop": true,
-//     "strict": true,
-//     "noEmitOnError": true
-//   },
-//   "include": ["src/**/*", "./server.ts"],
-//   "exclude": ["node_modules", "**/*.spec.ts"]
-// }
