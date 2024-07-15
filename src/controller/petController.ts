@@ -22,16 +22,6 @@ export default class PetController {
                 size
             } = req.body as PetEntity
 
-            if(!Object.values(EnumSpecies).includes(species as EnumSpecies) ) {
-                return res.status(400)
-                    .json({ message: "Invalid Species" })
-            }
-
-            if(size && !(size in EnumSize) ) {
-                return res.status(400)
-                    .json({ message: "Invalid size" })
-            }
-
             const newPet = new PetEntity(
                 name,
                 species,
@@ -54,14 +44,14 @@ export default class PetController {
         res: Response<TypeResBodyPet>
     ) {
         const listPets = await this.repository.list()
-        const data = listPets.map((pets) => {
+        const data = listPets.map((pet) => {
             return {
-              id: pets.id,
-              name: pets.name,
-              species: pets.species,
-              size: pets.size
+                id: pet.id,
+                name: pet.name,
+                species: pet.species,
+                size: pet.size !== null && pet.size ? pet.size : undefined
             }
-          })
+        })
         return res.status(200).json({ data })
     }
 
