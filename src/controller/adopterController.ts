@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import AdopterEntity from "../entities/AdopterEntity.js"
 import AdopterRepo from "../repositories/AdopterRepo.js"
 import AddressEntity from "../entities/AddressEntity.js"
+import { TypeReqBodyAdopter, TypeResBodyAdopter } from "../types/typeAdopter.js"
 
 
 export default class AdopterController {
@@ -10,7 +11,7 @@ export default class AdopterController {
     private repository: AdopterRepo
   ) {}
 
-  async create(req: Request, res: Response) {
+  async create(req: Request<{}, {}, TypeReqBodyAdopter>, res: Response<TypeResBodyAdopter>) {
 
       try {
         const { name, password, img_profile, phone, address } = req.body as AdopterEntity
@@ -24,7 +25,7 @@ export default class AdopterController {
         )
 
         this.repository.create(newAdopter);
-        return res.status(201).json(newAdopter);
+        return res.status(201).json({ data: { id: newAdopter.id, name, phone } });
       } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
       }
