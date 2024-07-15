@@ -18,5 +18,6 @@ petRouter.get("/", (req, res) => petController.list(req, res))
 petRouter.put("/:id", (req, res) => petController.update(req, res))
 petRouter.delete("/:id", (req, res) => petController.destroy(req, res))
 petRouter.put("/:pet_id/:adopter_id", (req, res) => petController.adoptPet(req, res))
+petRouter.get("/filter/size", (req, res) => petController.listPetSize(req, res))
 
 export default petRouter

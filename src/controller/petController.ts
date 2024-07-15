@@ -100,4 +100,11 @@ export default class PetController {
 
         return res.sendStatus(204)
     }
+
+    async listPetSize(req: Request, res: Response) {
+
+        const { size } = req.query
+        const listPets = await this.repository.listPetSize(size as EnumSize)
+        return res.status(200).json(listPets)
+    }
 }

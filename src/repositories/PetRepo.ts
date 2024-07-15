@@ -2,6 +2,7 @@ import { Repository } from "typeorm"
 import PetEntity from "../entities/PetEntity.js"
 import PetInterface from "./interfaces/PetInterface.js"
 import AdopterEntity from "../entities/AdopterEntity.js"
+import EnumSize from "../enum/EnumSize.js"
 
 
 export default class PetRepo implements PetInterface {
@@ -115,4 +116,12 @@ export default class PetRepo implements PetInterface {
             }
         }
     }
+
+    async listPetSize(size: EnumSize): Promise<PetEntity[]> {
+
+        const pets = await this.petRepository.find({ where: { size } })
+
+        return pets
+    }
+
 }
