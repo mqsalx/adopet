@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import AdopterEntity from "../entities/AdopterEntity.js"
 import AdopterRepo from "../repositories/AdopterRepo.js"
 import AddressEntity from "../entities/AddressEntity.js"
-import { TypeReqBodyAdopter, TypeResBodyAdopter } from "../types/typeAdopter.js"
+import { TypeReqBodyAdopter, TypeReqParamsAdopter, TypeResBodyAdopter } from "../types/typeAdopter.js"
 
 
 export default class AdopterController {
@@ -11,7 +11,10 @@ export default class AdopterController {
     private repository: AdopterRepo
   ) {}
 
-  async create(req: Request<{}, {}, TypeReqBodyAdopter>, res: Response<TypeResBodyAdopter>) {
+  async create(
+    req: Request<{}, {}, TypeReqBodyAdopter>,
+    res: Response<TypeResBodyAdopter>
+  ){
 
       try {
         const { name, password, img_profile, phone, address } = req.body as AdopterEntity
@@ -31,12 +34,23 @@ export default class AdopterController {
       }
   }
 
-  async list(req: Request, res: Response) {
+  async list(
+    req: Request<TypeReqParamsAdopter,{}, TypeReqBodyAdopter>,
+    res: Response<TypeResBodyAdopter>
+  ) {
     const listAdopters = await this.repository.list()
-    return res.status(200).json(listAdopters)
+    const data = listAdopters.map((adopter) => ({
+      id: adopter.id,
+      name: adopter.name,
+      phone: adopter.phone
+    }))
+    return res.status(200).json({ data })
   }
 
-  async update(req: Request, res: Response) {
+  async update(
+    req: Request<TypeReqParamsAdopter,{}, TypeReqBodyAdopter>,
+    res: Response<TypeResBodyAdopter>
+  ) {
 
     const { id } = req.params
 
@@ -46,36 +60,42 @@ export default class AdopterController {
     )
 
     if (!success) {
-      return res.status(404).json({ message})
+      return res.status(404).json({ error: message})
     }
 
     return res.sendStatus(200)
   }
 
-  async destroy(req: Request, res: Response) {
+  async destroy(
+    req: Request<TypeReqParamsAdopter,{}, TypeReqBodyAdopter>,
+    res: Response<TypeResBodyAdopter>
+  ) {
     const { id } = req.params
 
     const { success, message } = await this.repository.destroy(Number(id))
 
     if (!success) {
-      return res.status(404).json({ message })
+      return res.status(404).json({ error: message })
     }
 
     return res.sendStatus(204)
   }
 
-  async updateAdopterAddress(req: Request, res: Response) {
+  async updateAdopterAddress(
+    req: Request<TypeReqParamsAdopter,{}, TypeReqBodyAdopter>,
+    res: Response<TypeResBodyAdopter>
+  ) {
 
     const { id } = req.params
     console.log("Controller")
 
     const { success, message } = await this.repository.updateAdopterAddress(
       Number(id),
-      req.body as AddressEntity
+      req.body.address as AddressEntity
       )
 
     if (!success) {
-      return res.status(404).json({ message })
+      return res.status(404).json({ error: message })
     }
 
     return res.sendStatus(204)
