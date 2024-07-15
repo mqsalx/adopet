@@ -1,6 +1,6 @@
 import AdopterEntity from "../entities/AdopterEntity.js"
 
-type TypeReqBodyAdopter = Omit<AdopterEntity, "id">
+type TypeReqBodyAdopter = Omit<AdopterEntity, "id"| "pets">
 
 type TypeReqParamsAdopter ={ id?:string }
 

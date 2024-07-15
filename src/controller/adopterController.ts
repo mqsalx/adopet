@@ -3,6 +3,7 @@ import AdopterEntity from "../entities/AdopterEntity.js"
 import AdopterRepo from "../repositories/AdopterRepo.js"
 import AddressEntity from "../entities/AddressEntity.js"
 import { TypeReqBodyAdopter, TypeReqParamsAdopter, TypeResBodyAdopter } from "../types/typeAdopter.js"
+import * as yup from "yup"
 
 
 export default class AdopterController {
@@ -16,22 +17,20 @@ export default class AdopterController {
     res: Response<TypeResBodyAdopter>
   ){
 
-      try {
-        const { name, password, img_profile, phone, address } = req.body as AdopterEntity
+    const { name, password, img_profile, phone, address } = req.body as AdopterEntity
+    let bodyValidated: TypeReqBodyAdopter
 
-        const newAdopter = new AdopterEntity(
-          name,
-          password,
-          phone,
-          img_profile,
-          address
-        )
+    const newAdopter = new AdopterEntity(
+      name,
+      password,
+      phone,
+      img_profile,
+      address
+    )
 
-        this.repository.create(newAdopter);
-        return res.status(201).json({ data: { id: newAdopter.id, name, phone } });
-      } catch (error) {
-        return res.status(500).json({ error: "Internal server error" });
-      }
+    this.repository.create(newAdopter)
+
+    return res.status(201).json({ data: { id: newAdopter.id, name, phone } })
   }
 
   async list(
@@ -94,7 +93,7 @@ export default class AdopterController {
     const { success, message } = await this.repository.updateAdopterAddress(
       Number(id),
       req.body.address as AddressEntity
-      )
+    )
 
     if (!success) {
       return res.status(404).json({ error: message })
