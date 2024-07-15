@@ -18,7 +18,6 @@ export default class AdopterController {
   ){
 
     const { name, password, img_profile, phone, address } = req.body as AdopterEntity
-    let bodyValidated: TypeReqBodyAdopter
 
     const newAdopter = new AdopterEntity(
       name,
@@ -30,7 +29,7 @@ export default class AdopterController {
 
     this.repository.create(newAdopter)
 
-    return res.status(201).json({ data: { id: newAdopter.id, name, phone } })
+    return res.status(201).json({ data: { id: newAdopter.id, name, phone, address } })
   }
 
   async list(
@@ -42,7 +41,8 @@ export default class AdopterController {
       return {
         id: adopter.id,
         name: adopter.name,
-        phone: adopter.phone
+        phone: adopter.phone,
+        address: adopter.address!==null ? adopter.address : undefined
       }
     })
     return res.status(200).json({ data })
@@ -83,7 +83,7 @@ export default class AdopterController {
   }
 
   async updateAdopterAddress(
-    req: Request<TypeReqParamsAdopter,{}, TypeReqBodyAdopter>,
+    req: Request<TypeReqParamsAdopter,{}, AddressEntity>,
     res: Response<TypeResBodyAdopter>
   ) {
 
@@ -92,7 +92,7 @@ export default class AdopterController {
 
     const { success, message } = await this.repository.updateAdopterAddress(
       Number(id),
-      req.body.address as AddressEntity
+      req.body
     )
 
     if (!success) {

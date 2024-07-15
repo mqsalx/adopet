@@ -1,23 +1,22 @@
 import * as yup from "yup"
-import { TypeReqBodyAdopter, TypeReqParamsAdopter, TypeResBodyAdopter } from "../../types/typeAdopter.js"
+import { TypeReqBodyAdopter } from "../../types/typeAdopter.js"
 import { NextFunction, Request, Response } from "express"
+import AddressEntity from "../../entities/AddressEntity.js"
 
 
-const schemaBodyAdopter: yup.Schema<Omit<TypeReqBodyAdopter, "address">> = yup.object({
-    name: yup.string().required(),
-    password: yup.string().required().min(6),
-    img_profile: yup.string().optional(),
-    phone: yup.string().required(),
+const schemaBodyAddress: yup.Schema<Omit<AddressEntity, "id">> = yup.object({
+    city: yup.string().required(),
+    state: yup.string().required().min(6),
   })
 
-const middlewareValidatorBodyAdopter = async(
+const middlewareValidatorBodyAddress = async(
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
     try {
 
-    await schemaBodyAdopter.validate(req.body, {
+    await schemaBodyAddress.validate(req.body, {
         abortEarly: false
     })
 
@@ -34,4 +33,4 @@ const middlewareValidatorBodyAdopter = async(
     }
 }
 
-export { middlewareValidatorBodyAdopter }
+export { middlewareValidatorBodyAddress }
