@@ -1,9 +1,9 @@
 import { Request, Response } from "express"
-import type TypePet from "../types/typePet.js"
 import EnumSpecies from "../enum/EnumSpecies.js"
 import PetRepo from "../repositories/PetRepo.js"
 import PetEntity from "../entities/PetEntity.js"
 import EnumSize from "../enum/EnumSize.js"
+import { TypeReqBodyPet, TypeReqParamsPet, TypeResBodyPet } from "../types/typePet.js"
 
 export default class PetController {
 
@@ -11,7 +11,7 @@ export default class PetController {
         private repository: PetRepo
     ){}
 
-    async create(req:Request, res:Response){
+    async create(req:Request<TypeReqParamsPet, {}, TypeReqBodyPet>, res:Response<TypeResBodyPet>){
 
         try {
             const {
@@ -42,19 +42,33 @@ export default class PetController {
 
             this.repository.create(newPet)
 
-            return res.status(201).json(newPet)
+            return res.status(201).json({ data: { id: newPet.id, name, species, size }})
         } catch (error) {
             return res.status(500).json({ error: "Internal server error" });
         }
 
     }
 
-    async list(req: Request, res: Response) {
+    async list(
+        req: Request<TypeReqParamsPet, {}, TypeReqBodyPet>,
+        res: Response<TypeResBodyPet>
+    ) {
         const listPets = await this.repository.list()
-        return res.status(200).json(listPets)
+        const data = listPets.map((pets) => {
+            return {
+              id: pets.id,
+              name: pets.name,
+              species: pets.species,
+              size: pets.size
+            }
+          })
+        return res.status(200).json({ data })
     }
 
-    async update(req: Request, res: Response) {
+    async update(
+        req: Request<TypeReqParamsPet, {}, TypeReqBodyPet>,
+        res: Response<TypeResBodyPet>
+    ) {
 
         const { id } = req.params
 
@@ -71,7 +85,7 @@ export default class PetController {
 
     }
 
-    async destroy(req: Request, res: Response) {
+    async destroy(req: Request<TypeReqParamsPet, {}, TypeReqBodyPet>, res: Response<TypeResBodyPet>) {
 
         const { id } = req.params
 
@@ -85,7 +99,7 @@ export default class PetController {
 
     }
 
-    async adoptPet(req: Request, res: Response) {
+    async adoptPet(req: Request<TypeReqParamsPet, {}, TypeReqBodyPet>, res: Response<TypeResBodyPet>) {
 
         const { pet_id, adopter_id } = req.params
 

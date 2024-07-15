@@ -1,11 +1,15 @@
-import EnumSpecies from "../enum/EnumSpecies.js"
+import PetEntity from "../entities/PetEntity.js"
 
-type TypePet = {
-    id: number,
-    name: string,
-    species: EnumSpecies,
-    adopt: boolean,
-    age: Date
+type TypeReqBodyPet = Omit<PetEntity, "id">
+
+type TypeReqParamsPet = { id?:string, pet_id?:string, adopter_id?:string }
+
+type TypeResBodyPet = {
+    data?:
+    | Pick<PetEntity, "id" | "name" | "species" | "size">
+    | Pick<PetEntity, "id" | "name" | "species" | "size">[]
+    error?: unknown
+    message?: string
 }
 
-export default TypePet
+export { TypeReqBodyPet, TypeResBodyPet, TypeReqParamsPet }

@@ -39,11 +39,13 @@ export default class AdopterController {
     res: Response<TypeResBodyAdopter>
   ) {
     const listAdopters = await this.repository.list()
-    const data = listAdopters.map((adopter) => ({
-      id: adopter.id,
-      name: adopter.name,
-      phone: adopter.phone
-    }))
+    const data = listAdopters.map((adopter) => {
+      return {
+        id: adopter.id,
+        name: adopter.name,
+        phone: adopter.phone
+      }
+    })
     return res.status(200).json({ data })
   }
 
