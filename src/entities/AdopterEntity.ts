@@ -1,4 +1,6 @@
 import {
+    BeforeInsert,
+    BeforeUpdate,
     Column,
     Entity,
     JoinColumn,
@@ -8,6 +10,8 @@ import {
 } from "typeorm"
 import AddressEntity from "./AddressEntity.js"
 import PetEntity from "./PetEntity.js"
+import { createHashPassword } from "../utils/hashPassword.js"
+
 
 @Entity()
 export default class AdopterEntity {
@@ -41,5 +45,11 @@ export default class AdopterEntity {
         this.phone = phone
         this.img_profile = img_profile
         this.address = address
+    }
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    private async hashPassword(password: string) {
+        this.password = createHashPassword(this.password)
     }
 }
