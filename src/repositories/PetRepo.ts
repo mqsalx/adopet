@@ -1,21 +1,28 @@
-import { Repository } from "typeorm";
-import PetEntity from "../entities/PetEntity.js";
-import PetInterface from "./interfaces/PetInterface.js";
+import { Repository } from "typeorm"
+import PetEntity from "../entities/PetEntity.js"
+import PetInterface from "./interfaces/PetInterface.js"
+import AdopterEntity from "../entities/AdopterEntity.js"
+
 
 export default class PetRepo implements PetInterface {
 
-    private repository: Repository<PetEntity>
+    private petRepository: Repository<PetEntity>
+    private adopterRepository: Repository<AdopterEntity>
 
-    constructor(repository: Repository<PetEntity>) {
-        this.repository = repository
+    constructor(
+        petRepository: Repository<PetEntity>,
+        adopterRepository: Repository<AdopterEntity>
+    ) {
+        this.petRepository = petRepository
+        this.adopterRepository = adopterRepository
     }
 
     create(pet: PetEntity): void {
-        this.repository.save(pet)
+        this.petRepository.save(pet)
     }
 
     async list(): Promise<PetEntity[]> {
-        return await this.repository.find()
+        return await this.petRepository.find()
     }
 
     async update(
@@ -25,7 +32,7 @@ export default class PetRepo implements PetInterface {
 
         try {
 
-            const petToUpdate = await this.repository.findOne({ where: { id } })
+            const petToUpdate = await this.petRepository.findOne({ where: { id } })
 
             if (!petToUpdate) {
                 return { success: false, message: "Pet not found" }
@@ -33,7 +40,7 @@ export default class PetRepo implements PetInterface {
 
             Object.assign(petToUpdate, newData)
 
-            await this.repository.save(petToUpdate)
+            await this.petRepository.save(petToUpdate)
 
             return { success: true }
 
@@ -52,7 +59,7 @@ export default class PetRepo implements PetInterface {
 
         try {
 
-            const petToDestroy = await this.repository.findOne({ where: { id } })
+            const petToDestroy = await this.petRepository.findOne({ where: { id } })
 
             if (!petToDestroy) {
                 return { success: false, message: "Pet not found" }
@@ -60,7 +67,43 @@ export default class PetRepo implements PetInterface {
 
             Object.assign(petToDestroy)
 
-            await this.repository.remove(petToDestroy)
+            await this.petRepository.remove(petToDestroy)
+
+            return { success: true }
+
+        } catch (error) {
+            console.log(error)
+            return {
+                success: false,
+                message: "Internal server error"
+            }
+        }
+    }
+
+    async adoptPet(
+        pet_id: number,
+        adopter_id: number
+    ): Promise<{ success: boolean; message?: string }> {
+
+        try {
+
+
+            const pet = await this.petRepository.findOne({ where: { id: pet_id } })
+
+            if (!pet) {
+                return { success: false, message: "Pet not found" }
+            }
+
+            const adopter = await this.adopterRepository.findOne({ where: { id: adopter_id } })
+
+            if (!adopter) {
+                return { success: false, message: "Adopter not found" }
+            }
+
+            pet.adopter = adopter
+            pet.adopt = true
+
+            await this.petRepository.save(pet)
 
             return { success: true }
 

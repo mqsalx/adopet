@@ -16,8 +16,8 @@ export default class PetController {
             const {
                 name,
                 species,
-                adopt,
-                age
+                age,
+                adopt
             } = req.body as PetEntity
 
             if(!Object.values(EnumSpecies).includes(species as EnumSpecies) ) {
@@ -28,8 +28,8 @@ export default class PetController {
             const newPet = new PetEntity(
                 name,
                 species,
-                adopt,
-                age
+                age,
+                adopt
             )
 
             this.repository.create(newPet)
@@ -75,5 +75,21 @@ export default class PetController {
 
         return res.sendStatus(204)
 
+    }
+
+    async adoptPet(req: Request, res: Response) {
+
+        const { pet_id, adopter_id } = req.params
+
+        const { success, message } = await this.repository.adoptPet(
+            Number(pet_id),
+            Number(adopter_id)
+        )
+
+        if (!success) {
+            return res.status(404).json({ message })
+        }
+
+        return res.sendStatus(204)
     }
 }

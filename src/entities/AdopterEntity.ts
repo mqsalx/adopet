@@ -2,10 +2,12 @@ import {
     Column,
     Entity,
     JoinColumn,
+    OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
-} from "typeorm";
-import AddressEntity from "./AddressEntity.js";
+} from "typeorm"
+import AddressEntity from "./AddressEntity.js"
+import PetEntity from "./PetEntity.js"
 
 @Entity()
 export default class AdopterEntity {
@@ -23,6 +25,9 @@ export default class AdopterEntity {
         @OneToOne(() => AddressEntity, {nullable: true, cascade: true,eager: true})
         @JoinColumn()
         address?: AddressEntity
+
+        @OneToMany(() => PetEntity, (pet) => pet.adopter)
+        pets!: PetEntity[]
 
     constructor(
         name: string,

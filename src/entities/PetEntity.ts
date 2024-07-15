@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import EnumSpecies from "../enum/EnumSpecies.js";
+import AdopterEntity from "./AdopterEntity.js";
 
 @Entity()
 export default class PetEntity {
@@ -9,20 +10,22 @@ export default class PetEntity {
     name: string
     @Column()
     species: EnumSpecies
-    @Column()
-    adopt: boolean
     @Column({ type: 'date' })
     age: string
+    @Column()
+    adopt: boolean
+    @ManyToOne(() => AdopterEntity, (adopter) => adopter.pets)
+    adopter!: AdopterEntity
 
     constructor(
         name: string,
         species: EnumSpecies,
-        adopt: boolean,
-        age: string
+        age: string,
+        adopt: boolean
     ){
         this.name = name
         this.species = species
-        this.adopt = adopt
         this.age = age
+        this.adopt = adopt
     }
 }
