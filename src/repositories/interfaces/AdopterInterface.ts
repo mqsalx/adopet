@@ -18,4 +18,5 @@ export default interface AdopterInterface {
       id: number,
       address: AddressEntity
     ): Promise<{ success: boolean; message?: string }> | void
+
   }

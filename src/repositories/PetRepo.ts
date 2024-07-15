@@ -117,10 +117,8 @@ export default class PetRepo implements PetInterface {
         }
     }
 
-    async listPetSize(size: EnumSize): Promise<PetEntity[]> {
-
-        const pets = await this.petRepository.find({ where: { size } })
-
+    async listGenerics<Type extends keyof PetEntity>(key: Type, value: PetEntity[Type]): Promise<PetEntity[]>{
+        const pets = await this.petRepository.find({ where: { [key]: value } })
         return pets
     }
 

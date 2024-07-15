@@ -79,4 +79,5 @@ export default class AdopterController {
 
     return res.sendStatus(204)
   }
+
 }
