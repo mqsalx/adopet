@@ -1,5 +1,4 @@
 import * as yup from "yup"
-import { TypeReqBodyAdopter } from "../../types/typeAdopter.js"
 import { NextFunction, Request, Response } from "express"
 import AddressEntity from "../../entities/AddressEntity.js"
 
