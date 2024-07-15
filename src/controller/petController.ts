@@ -3,6 +3,7 @@ import type TypePet from "../types/typePet.js"
 import EnumSpecies from "../enum/EnumSpecies.js"
 import PetRepo from "../repositories/PetRepo.js"
 import PetEntity from "../entities/PetEntity.js"
+import EnumSize from "../enum/EnumSize.js"
 
 export default class PetController {
 
@@ -17,7 +18,8 @@ export default class PetController {
                 name,
                 species,
                 age,
-                adopt
+                adopt,
+                size
             } = req.body as PetEntity
 
             if(!Object.values(EnumSpecies).includes(species as EnumSpecies) ) {
@@ -25,11 +27,17 @@ export default class PetController {
                     .json({ message: "Invalid Species" })
             }
 
+            if(size && !(size in EnumSize) ) {
+                return res.status(400)
+                    .json({ message: "Invalid size" })
+            }
+
             const newPet = new PetEntity(
                 name,
                 species,
                 age,
-                adopt
+                adopt,
+                size
             )
 
             this.repository.create(newPet)
