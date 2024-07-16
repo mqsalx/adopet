@@ -3,6 +3,7 @@ import PetEntity from "../entities/PetEntity.js"
 import AdopterEntity from "../entities/AdopterEntity.js"
 import AddressEntity from "../entities/AddressEntity.js"
 import "dotenv/config"
+import AnimalShelterEntity from "../entities/AnimalShelterEntity.js"
 
 
 function parsePort(port: string | undefined): number | undefined {
@@ -25,7 +26,8 @@ export const AppDataSource = new DataSource({
     entities: [
         PetEntity,
         AdopterEntity,
-        AddressEntity
+        AddressEntity,
+        AnimalShelterEntity
     ],
     synchronize: true
 })

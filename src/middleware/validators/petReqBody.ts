@@ -6,7 +6,7 @@ import EnumSize from "../../enum/EnumSize.js"
 import errorHandlerYup from "../../utils/errorHandlerYup.js"
 
 
-const schemaBodyPet: yup.ObjectSchema<Omit<TypeReqBodyPet, "adopter">> = yup.object({
+const schemaBodyPet: yup.ObjectSchema<Omit<TypeReqBodyPet, "adopter" | "animalShelter">> = yup.object({
     name: yup.string().defined().required(),
     species: yup.string().oneOf(Object.values(EnumSpecies)).defined().required(),
     size: yup.string().oneOf(Object.values(EnumSize)).defined().required(),

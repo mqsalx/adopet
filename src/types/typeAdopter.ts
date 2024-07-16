@@ -2,7 +2,7 @@ import AdopterEntity from "../entities/AdopterEntity.js"
 
 type TypeReqBodyAdopter = Omit<AdopterEntity, "id"| "pets">
 
-type TypeReqParamsAdopter ={ id?:string }
+type TypeReqParamsAdopter ={ id?: string }
 
 type TypeResBodyAdopter = {
     data?:
@@ -10,4 +10,8 @@ type TypeResBodyAdopter = {
     | Pick<AdopterEntity, "id" | "name" | "phone" | "address">[]
 }
 
-export { TypeReqBodyAdopter, TypeResBodyAdopter, TypeReqParamsAdopter }
+export {
+    TypeReqBodyAdopter,
+    TypeResBodyAdopter,
+    TypeReqParamsAdopter
+}
