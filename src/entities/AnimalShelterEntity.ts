@@ -14,7 +14,7 @@ import { createHashPassword } from "../utils/hashPassword.js"
 
 
 @Entity()
-export default class AdopterEntity {
+export default class AnimalShelterEntity {
     @PrimaryGeneratedColumn()
         id!: number
         @Column()
@@ -23,27 +23,27 @@ export default class AdopterEntity {
         password: string
         @Column({ unique: true })
         phone: string
-        @Column({ nullable: true })
-        img_profile?: string
+        @Column({ unique: true })
+        email: string
 
-        @OneToOne(() => AddressEntity, { nullable: true, cascade: true,eager: true })
+        @OneToOne(() => AddressEntity, { nullable: true, cascade: true, eager: true })
         @JoinColumn()
         address?: AddressEntity
 
-        @OneToMany(() => PetEntity, (pet) => pet.adopter)
+        @OneToMany(() => PetEntity, (pet) => pet.animalShelter)
         pets!: PetEntity[]
 
     constructor(
         name: string,
         password: string,
         phone: string,
-        img_profile?: string,
+        email: string,
         address?: AddressEntity
     ) {
         this.name = name
         this.password = password
         this.phone = phone
-        this.img_profile = img_profile
+        this.email = email
         this.address = address
     }
 

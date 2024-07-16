@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import EnumSpecies from "../enum/EnumSpecies.js";
 import AdopterEntity from "./AdopterEntity.js";
 import EnumSize from "../enum/EnumSize.js";
+import AnimalShelterEntity from "./AnimalShelterEntity.js";
 
 @Entity()
 export default class PetEntity {
@@ -19,6 +20,8 @@ export default class PetEntity {
     adopt: boolean
     @ManyToOne(() => AdopterEntity, (adopter) => adopter.pets)
     adopter!: AdopterEntity
+    @ManyToOne(() => AnimalShelterEntity, (adopter) => adopter.pets)
+    animalShelter!: AnimalShelterEntity
 
     constructor(
         name: string,

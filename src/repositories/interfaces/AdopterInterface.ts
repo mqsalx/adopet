@@ -3,20 +3,20 @@ import AdopterEntity from "../../entities/AdopterEntity.js"
 
 export default interface AdopterInterface {
 
-    create(adopter: AdopterEntity):void
+  create(adopter: AdopterEntity): void | Promise<void>
 
-    list(): AdopterEntity[] | Promise<AdopterEntity[]>
+  list(): AdopterEntity[] | Promise<AdopterEntity[]>
 
-    update(
-      id: number,
-      pet: AdopterEntity
-    ): Promise<{ success: boolean; message?: string }> | void
+  update(
+    id: number,
+    pet: AdopterEntity
+  ): void
 
-    destroy(id: number): Promise<{ success: boolean; message?: string }> | void
+  destroy(id: number): void
 
-    updateAdopterAddress(
-      id: number,
-      address: AddressEntity
-    ): Promise<{ success: boolean; message?: string }> | void
+  updateAdopterAddress(
+    id: number,
+    address: AddressEntity
+  ): void
 
-  }
+}

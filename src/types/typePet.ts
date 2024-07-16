@@ -8,8 +8,6 @@ type TypeResBodyPet = {
     data?:
     | Pick<PetEntity, "id" | "name" | "species" | "size">
     | Pick<PetEntity, "id" | "name" | "species" | "size">[]
-    error?: unknown
-    message?: string
 }
 
 export { TypeReqBodyPet, TypeResBodyPet, TypeReqParamsPet }
